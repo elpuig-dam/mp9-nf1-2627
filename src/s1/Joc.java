@@ -47,6 +47,8 @@ public class Joc {
         schExService.shutdownNow();
 
 
+        System.out.println("Final de la partida, els jugadors han obtingut els següents punts:");
+
         Collections.sort(jugadors);
 
         jugadors.forEach(System.out::println);

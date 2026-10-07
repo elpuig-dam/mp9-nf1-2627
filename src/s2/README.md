@@ -126,17 +126,23 @@ Un cop tens la fórmula matemàtica del cas recursiu, convertir-la al mètode
        return t1.join() + t2.join();
    ```
 
-4. **El cas base de la fórmula = la condició de sortida del `compute()`.**
-   Quan la fórmula diu "si n = 0" o "si n < d", aquesta condició es converteix
-   directament en un `if` que retorna el valor sense crear cap subtasca.
+4. **El cas base de la fórmula no es tracta mai amb un `if` dins del
+   `compute()`: el "cobreix" la versió seqüencial/iterativa.** En aquesta
+   estructura amb llindar, `compute()` no arriba mai a comprovar el cas base
+   real (per exemple `n = 0`), perquè abans d'arribar-hi ja s'ha activat la
+   condició del llindar i s'ha cridat al mètode seqüencial. Aquest mètode
+   seqüencial és el que, internament (amb un bucle), recorre tots els casos
+   fins arribar al cas base i en calcula el resultat directament, sense
+   crear cap subtasca.
 
-5. **El llindar és una optimització afegida, no part de la fórmula.** La
-   fórmula només et diu *quan* parar de recursivitat (cas base matemàtic);
-   el llindar et diu *quan deixar de crear tasques noves* perquè, per mides
-   petites, el cost de gestionar fork/join és més gran que el benefici de
-   paral·lelitzar. Per això, quan s'arriba al llindar, s'executa la versió
-   **iterativa equivalent** a la mateixa fórmula, en lloc de seguir creant
-   tasques fins al cas base real.
+5. **El llindar substitueix el cas base dins del `compute()`.** La fórmula
+   et diu matemàticament *quan* para la recursivitat (el cas base real), però
+   al codi aquella condició (`n == 0`, `b == 0`...) no s'escriu mai tal qual:
+   es reemplaça per la condició del llindar (`n < LLINDAR`), que decideix
+   *quan deixar de crear tasques noves* perquè, per mides petites, el cost de
+   gestionar fork/join és més gran que el benefici de paral·lelitzar. Per
+   això, en lloc d'un `if` que retorna el cas base, hi ha un `if` que crida
+   a la versió iterativa equivalent.
 
 **Resum pràctic:** compta quantes crides recursives diferents apareixen al
 costat dret de la fórmula → aquest és el nombre d'instàncies de la classe

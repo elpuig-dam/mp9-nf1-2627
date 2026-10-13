@@ -12,7 +12,7 @@ public class Multiplicacio implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         try {
-            Thread.sleep((int)Math.random()*2000 + 1000);
+            Thread.sleep((int)(Math.random()*2000) + 1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

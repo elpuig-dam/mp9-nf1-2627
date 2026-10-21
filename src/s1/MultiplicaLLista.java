@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class MultiplicaLLista {
     public static void main(String[] args) throws InterruptedException {
 
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(300);
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(500);
         List<Multiplicacio> llistaTasques= new ArrayList<Multiplicacio>();
         for (int i = 0; i < 10000; i++) {
             Multiplicacio calcula = new Multiplicacio((int)(Math.random()*10), (int)(Math.random()*10));
